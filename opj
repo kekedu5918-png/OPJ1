@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OPJ Élite — Concours Police Judiciaire</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════
+   DESIGN SYSTEM
+═══════════════════════════════════════ */
+:root{
+  --ink:#08111f;--ink2:#0f1e33;--ink3:#162540;--ink4:#1e3052;--ink5:#243a5e;
+  --gold:#f0b429;--gold2:#ffd369;--gold-dim:rgba(240,180,41,.12);--gold-border:rgba(240,180,41,.25);
+  --blue:#3d8ef0;--blue2:#60a5fa;--blue-dim:rgba(61,142,240,.12);
+  --green:#22d3a0;--green-dim:rgba(34,211,160,.12);
+  --red:#f05c7a;--red-dim:rgba(240,92,122,.12);
+  --purple:#a78bfa;--purple-dim:rgba(167,139,250,.12);
+  --silver:#7a9bbf;--silver2:#a8c4de;--white:#eef4ff;
+  --border:rgba(100,140,190,.12);--border2:rgba(240,180,41,.2);
+  --r4:4px;--r8:8px;--r12:12px;--r16:16px;--r20:20px;--r24:24px;--r32:32px;--rfull:999px;
+  --shadow:0 8px 32px rgba(0,0,0,.45);--shadow2:0 2px 12px rgba(0,0,0,.3);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-tap-highlight-color:transparent}
+body{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  background:var(--ink);color:var(--white);
+  min-height:100vh;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+/* animated bg */
+body::before{
+  content:'';position:fixed;inset:0;
+  background:radial-gradient(ellipse 70% 60% at 15% 0%,rgba(61,142,240,.07) 0%,transparent 55%),
+             radial-gradient(ellipse 50% 40% at 85% 100%,rgba(240,180,41,.06) 0%,transparent 55%);
+  pointer-events:none;z-index:0;
+}
+.wrap{max-width:860px;margin:0 auto;padding:0 14px 100px;position:relative;z-index:1}
+
+/* ═══ TYPOGRAPHY ═══ */
+.title{font-family:‘Syne’,sans-serif;font-weight:800}
+
+/* ═══ ANIMATIONS ═══ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pop{0%,100%{transform:scale(1)}40%{transform:scale(1.12)}70%{transform:scale(.96)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes glow{0%,100%{box-shadow:0 0 12px rgba(240,180,41,.3)}50%{box-shadow:0 0 28px rgba(240,180,41,.7)}}
+@keyframes heartLose{0%{transform:scale(1)}40%{transform:scale(1.3)}100%{transform:scale(1) opacity(0)}}
+@keyframes levelUp{0%{opacity:0;transform:scale(.5) translateY(30px)}60%{transform:scale(1.15) translateY(-5px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes confetti{0%{transform:translateY(-10px) rotate(0);opacity:1}100%{transform:translateY(80px) rotate(720deg);opacity:0}}
+@keyframes slideIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes countUp{from{opacity:0;transform:scale(.3)}to{opacity:1;transform:scale(1)}}
+
+.anim-fadeup{animation:fadeUp .4s cubic-bezier(.4,0,.2,1) both}
+.anim-pop{animation:pop .5s ease}
+.anim-shake{animation:shake .4s ease}
+
+/* ═══ CARDS ═══ */
+.card{
+background:var(–ink2);border:1px solid var(–border);
+border-radius:var(–r20);padding:20px;
+transition:border-color .25s;
+}
+.card-gold{border-color:var(–border2);background:linear-gradient(135deg,var(–ink2),var(–ink3))}
+
+/* ═══ BUTTONS ═══ */
+.btn{
+display:inline-flex;align-items:center;justify-content:center;gap:8px;
+padding:14px 28px;border:none;border-radius:var(–rfull);
+font-family:‘Plus Jakarta Sans’,sans-serif;font-size:.95rem;font-weight:700;
+cursor:pointer;transition:all .2s ease;
+}
+.btn-gold{background:linear-gradient(135deg,var(–gold),#d4920a);color:var(–ink);box-shadow:0 4px 20px rgba(240,180,41,.3)}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(240,180,41,.45)}
+.btn-ghost{background:transparent;border:2px solid var(–border);color:var(–silver2)}
+.btn-ghost:hover{border-color:var(–gold);color:var(–gold)}
+.btn:disabled{opacity:.35;cursor:not-allowed;transform:none!important}
+.btn-full{width:100%}
+
+/* ═══ BADGE PILL ═══ */
+.pill{
+display:inline-flex;align-items:center;gap:5px;
+padding:4px 12px;border-radius:var(–rfull);
+font-size:.75rem;font-weight:700;letter-spacing:.04em;
+}
+.pill-gold{background:var(–gold-dim);border:1px solid var(–gold-border);color:var(–gold)}
+.pill-blue{background:var(–blue-dim);border:1px solid rgba(61,142,240,.25);color:var(–blue2)}
+.pill-green{background:var(–green-dim);border:1px solid rgba(34,211,160,.25);color:var(–green)}
+.pill-red{background:var(–red-dim);border:1px solid rgba(240,92,122,.25);color:var(–red)}
+.pill-purple{background:var(–purple-dim);border:1px solid rgba(167,139,250,.25);color:var(–purple)}
+
+/* ═══════════════════════════════════════
+TOPBAR
+═══════════════════════════════════════ */
+.topbar{
+position:sticky;top:0;z-index:100;
+background:rgba(8,17,31,.92);
+backdrop-filter:blur(16px);
+border-bottom:1px solid var(–border);
+padding:10px 14px;
+}
+.topbar-inner{
+max-width:860px;margin:0 auto;
+display:flex;align-items:center;justify-content:space-between;gap:10px;
+}
+.topbar-brand{
+display:flex;align-items:center;gap:8px;
+font-family:‘Syne’,sans-serif;font-size:1.05rem;font-weight:800;
+background:linear-gradient(135deg,var(–gold2),var(–gold));
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.topbar-stats{display:flex;align-items:center;gap:14px}
+.topbar-stat{
+display:flex;align-items:center;gap:5px;
+font-size:.9rem;font-weight:700;
+}
+.topbar-stat .icon{font-size:1.1rem}
+.topbar-stat.xp{color:var(–gold)}
+.topbar-stat.streak{color:#ff6b35}
+.topbar-stat.hearts{color:var(–red)}
+.streak-flame{animation:bounce 2s ease-in-out infinite}
+.hearts-display{display:flex;gap:3px}
+.heart{font-size:.95rem;transition:all .3s}
+.heart.empty{opacity:.25;filter:grayscale(1)}
+
+/* ═══════════════════════════════════════
+BOTTOM NAV
+═══════════════════════════════════════ */
+.bottom-nav{
+position:fixed;bottom:0;left:0;right:0;z-index:100;
+background:rgba(8,17,31,.95);
+backdrop-filter:blur(16px);
+border-top:1px solid var(–border);
+padding:8px 0 env(safe-area-inset-bottom);
+}
+.bottom-nav-inner{
+max-width:860px;margin:0 auto;
+display:flex;justify-content:space-around;
+}
+.nav-item{
+display:flex;flex-direction:column;align-items:center;gap:3px;
+padding:8px 16px;
+border:none;background:none;cursor:pointer;
+font-family:‘Plus Jakarta Sans’,sans-serif;
+font-size:.7rem;font-weight:600;
+color:var(–silver);border-radius:var(–r12);
+transition:all .2s ease;
+position:relative;
+}
+.nav-item:hover{color:var(–white)}
+.nav-item.active{color:var(–gold)}
+.nav-item .nav-icon{font-size:1.35rem;transition:transform .2s}
+.nav-item.active .nav-icon{transform:scale(1.15)}
+.nav-item .nav-dot{
+position:absolute;top:6px;right:14px;
+width:7px;height:7px;
+background:var(–red);border-radius:50%;
+display:none;
+}
+
+/* ═══════════════════════════════════════
+SECTIONS
+═══════════════════════════════════════ */
+.section{display:none;padding-top:16px;animation:fadeUp .35s ease}
+.section.active{display:block}
+
+/* ═══════════════════════════════════════
+HOME / DASHBOARD
+═══════════════════════════════════════ */
+.hero{
+padding:28px 20px 24px;
+background:linear-gradient(135deg,var(–ink2) 0%,var(–ink3) 100%);
+border-radius:var(–r24);
+border:1px solid var(–border2);
+margin-bottom:16px;
+position:relative;overflow:hidden;
+}
+.hero::after{
+content:’’;position:absolute;top:-40px;right:-40px;
+width:180px;height:180px;
+background:radial-gradient(circle,rgba(240,180,41,.1),transparent 70%);
+border-radius:50%;
+}
+.hero-rank{
+font-size:.78rem;font-weight:700;color:var(–gold);
+letter-spacing:.1em;text-transform:uppercase;
+display:flex;align-items:center;gap:6px;margin-bottom:6px;
+}
+.hero-name{
+font-family:‘Syne’,sans-serif;font-size:1.6rem;font-weight:800;
+color:var(–white);margin-bottom:16px;line-height:1.2;
+}
+.hero-xp-track{height:8px;background:var(–ink4);border-radius:var(–rfull);overflow:hidden;margin-bottom:6px}
+.hero-xp-fill{
+height:100%;border-radius:var(–rfull);
+background:linear-gradient(90deg,var(–gold),var(–gold2));
+transition:width 1s cubic-bezier(.65,0,.35,1);
+position:relative;overflow:hidden;
+}
+.hero-xp-fill::after{
+content:’’;position:absolute;inset:0;
+background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);
+animation:shimmer 2s infinite;
+}
+.hero-xp-label{font-size:.8rem;color:var(–silver);font-weight:600}
+.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
+.hero-stat{
+background:rgba(15,30,51,.6);
+border:1px solid var(–border);border-radius:var(–r12);
+padding:12px 8px;text-align:center;
+}
+.hero-stat-num{font-family:‘Syne’,sans-serif;font-size:1.5rem;font-weight:800;color:var(–gold)}
+.hero-stat-lbl{font-size:.7rem;color:var(–silver);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+
+/* MODULES */
+.modules-header{
+display:flex;justify-content:space-between;align-items:center;
+margin:20px 0 12px;
+}
+.modules-title{font-family:‘Syne’,sans-serif;font-size:1.1rem;font-weight:800;color:var(–white)}
+.modules-sub{font-size:.8rem;color:var(–silver)}
+.module-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(min-width:540px){.module-grid{grid-template-columns:repeat(4,1fr)}}
+.module-card{
+background:var(–ink2);border:2px solid var(–border);
+border-radius:var(–r16);padding:16px 12px;
+text-align:center;cursor:pointer;
+transition:all .25s cubic-bezier(.4,0,.2,1);
+position:relative;overflow:hidden;
+}
+.module-card::before{
+content:’’;position:absolute;inset:0;opacity:0;
+transition:opacity .3s;
+}
+.module-card:hover{transform:translateY(-4px);box-shadow:var(–shadow)}
+.module-card.locked{opacity:.45;cursor:default;filter:grayscale(.8)}
+.module-card .m-icon{font-size:2rem;margin-bottom:8px;display:block;transition:transform .3s}
+.module-card:hover .m-icon{transform:scale(1.15) rotate(-5deg)}
+.module-card .m-name{font-size:.82rem;font-weight:700;color:var(–white)}
+.module-card .m-count{font-size:.72rem;color:var(–silver);margin-top:3px}
+.module-card .m-lock{position:absolute;top:8px;right:8px;font-size:.85rem;opacity:.6}
+/* module colors */
+.module-card.c-blue{border-color:rgba(61,142,240,.25)}
+.module-card.c-blue::before{background:var(–blue-dim)}
+.module-card.c-blue:hover{border-color:var(–blue2)}
+.module-card.c-blue:hover::before{opacity:1}
+.module-card.c-gold{border-color:var(–border2)}
+.module-card.c-gold::before{background:var(–gold-dim)}
+.module-card.c-gold:hover{border-color:var(–gold)}
+.module-card.c-gold:hover::before{opacity:1}
+.module-card.c-green{border-color:rgba(34,211,160,.2)}
+.module-card.c-green::before{background:var(–green-dim)}
+.module-card.c-green:hover{border-color:var(–green)}
+.module-card.c-green:hover::before{opacity:1}
+.module-card.c-purple{border-color:rgba(167,139,250,.2)}
+.module-card.c-purple::before{background:var(–purple-dim)}
+.module-card.c-purple:hover{border-color:var(–purple)}
+.module-card.c-purple:hover::before{opacity:1}
+
+/* daily tip */
+.daily-tip{
+background:var(–blue-dim);border:1px solid rgba(61,142,240,.2);
+border-radius:var(–r16);padding:16px;margin-bottom:16px;
+display:flex;align-items:flex-start;gap:12px;
+animation:slideIn .4s ease;
+}
+.daily-tip-icon{font-size:1.5rem;flex-shrink:0}
+.daily-tip-label{font-size:.72rem;font-weight:700;color:var(–blue2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+.daily-tip-text{font-size:.88rem;color:var(–silver2);line-height:1.6}
+.daily-tip-text strong{color:var(–white)}
+
+/* ═══════════════════════════════════════
+LEVELS / PARCOURS
+═══════════════════════════════════════ */
+.levels-path{display:grid;gap:12px;padding-top:4px}
+.level-item{
+display:flex;align-items:center;gap:14px;
+padding:14px 16px;
+background:var(–ink2);border:2px solid var(–border);
+border-radius:var(–r16);cursor:pointer;
+transition:all .25s ease;
+position:relative;
+}
+.level-item:hover:not(.locked){transform:translateX(6px);border-color:var(–border2)}
+.level-item.current{border-color:var(–gold);background:var(–gold-dim);animation:glow 3s ease-in-out infinite}
+.level-item.completed{border-color:rgba(34,211,160,.3);background:var(–green-dim)}
+.level-item.locked{opacity:.4;cursor:default}
+.level-badge{
+width:52px;height:52px;border-radius:50%;
+display:flex;align-items:center;justify-content:center;
+font-size:1.5rem;flex-shrink:0;
+background:var(–ink3);border:2px solid var(–border);
+transition:transform .3s;
+}
+.level-item.current .level-badge{background:var(–gold-dim);border-color:var(–gold);transform:scale(1.1)}
+.level-item.completed .level-badge{background:var(–green-dim);border-color:var(–green)}
+.level-item:hover:not(.locked) .level-badge{transform:scale(1.08) rotate(5deg)}
+.level-info{flex:1;min-width:0}
+.level-num{font-size:.7rem;font-weight:700;color:var(–silver);text-transform:uppercase;letter-spacing:.08em}
+.level-name{font-family:‘Syne’,sans-serif;font-size:1rem;font-weight:800;color:var(–white);margin:2px 0 4px}
+.level-desc{font-size:.78rem;color:var(–silver);line-height:1.4}
+.level-pills{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.level-action{flex-shrink:0;font-size:1.1rem;color:var(–silver);transition:transform .3s}
+.level-item:hover:not(.locked) .level-action{transform:translateX(4px);color:var(–gold)}
+.level-progress-mini{height:4px;background:var(–ink4);border-radius:var(–rfull);overflow:hidden;margin-top:6px}
+.level-progress-mini-fill{height:100%;background:linear-gradient(90deg,var(–gold),var(–gold2));border-radius:var(–rfull)}
+
+/* ═══════════════════════════════════════
+QUIZ ENGINE
+═══════════════════════════════════════ */
+.quiz-overlay{
+display:none;
+position:fixed;inset:0;z-index:200;
+background:var(–ink);
+flex-direction:column;
+overflow-y:auto;
+}
+.quiz-overlay.active{display:flex}
+
+.quiz-header{
+padding:14px 16px;
+display:flex;align-items:center;justify-content:space-between;gap:12px;
+background:var(–ink2);border-bottom:1px solid var(–border);
+position:sticky;top:0;z-index:10;
+}
+.quiz-close{
+background:var(–ink3);border:1px solid var(–border);
+border-radius:50%;width:36px;height:36px;
+display:flex;align-items:center;justify-content:center;
+cursor:pointer;font-size:1rem;color:var(–silver);
+transition:all .2s;
+}
+.quiz-close:hover{background:var(–red-dim);border-color:var(–red);color:var(–red)}
+.quiz-progress-track{flex:1;height:8px;background:var(–ink4);border-radius:var(–rfull);overflow:hidden}
+.quiz-progress-fill{height:100%;background:linear-gradient(90deg,var(–blue),var(–blue2));border-radius:var(–rfull);transition:width .5s ease}
+.quiz-hearts-header{display:flex;gap:4px;flex-shrink:0}
+.quiz-heart{font-size:1.1rem;transition:all .3s}
+.quiz-heart.empty{opacity:.2;filter:grayscale(1)}
+
+.quiz-body{flex:1;padding:20px 16px;max-width:700px;margin:0 auto;width:100%}
+.q-category{font-size:.75rem;font-weight:700;color:var(–blue2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.q-num{font-size:.8rem;color:var(–silver);font-weight:600;margin-bottom:10px}
+.q-text{
+font-family:‘Syne’,sans-serif;font-size:clamp(1.1rem,2.8vw,1.45rem);
+font-weight:800;color:var(–white);line-height:1.4;margin-bottom:24px;
+}
+.options{display:grid;gap:10px;margin-bottom:16px}
+.opt{
+padding:15px 18px;
+background:var(–ink3);border:2px solid var(–border);
+border-radius:var(–r16);cursor:pointer;
+transition:all .2s cubic-bezier(.4,0,.2,1);
+font-size:.97rem;font-weight:500;color:var(–white);
+display:flex;align-items:center;gap:12px;line-height:1.45;
+text-align:left;
+}
+.opt-badge{
+min-width:30px;height:30px;border-radius:50%;
+background:var(–ink4);border:1px solid var(–border);
+display:flex;align-items:center;justify-content:center;
+font-size:.8rem;font-weight:800;color:var(–silver);
+transition:all .2s;flex-shrink:0;
+}
+.opt:hover:not(.disabled){border-color:var(–blue2);background:var(–blue-dim);transform:translateX(5px)}
+.opt:hover:not(.disabled) .opt-badge{background:var(–blue-dim);border-color:var(–blue2);color:var(–blue2)}
+.opt.correct{border-color:var(–green);background:var(–green-dim);animation:pop .5s ease}
+.opt.correct .opt-badge{background:var(–green);color:var(–ink);border-color:var(–green)}
+.opt.incorrect{border-color:var(–red);background:var(–red-dim);animation:shake .4s ease}
+.opt.incorrect .opt-badge{background:var(–red);color:#fff;border-color:var(–red)}
+.opt.disabled{pointer-events:none}
+.opt.disabled:not(.correct):not(.incorrect){opacity:.4}
+
+.expl-box{
+padding:14px 16px;
+background:var(–ink3);border-radius:var(–r12);
+border-left:3px solid var(–gold);
+font-size:.88rem;color:var(–silver2);line-height:1.7;
+display:none;animation:fadeUp .3s ease;
+margin-bottom:16px;
+}
+.expl-box.show{display:block}
+.expl-box strong{color:var(–white)}
+
+.quiz-footer{
+padding:14px 16px;
+background:var(–ink2);border-top:1px solid var(–border);
+position:sticky;bottom:0;
+}
+.quiz-footer-inner{max-width:700px;margin:0 auto}
+
+/* answer feedback */
+.feedback-bar{
+padding:12px 16px;border-radius:var(–r12);
+display:none;margin-bottom:10px;
+font-weight:700;font-size:.95rem;
+align-items:center;gap:10px;
+animation:fadeUp .3s ease;
+}
+.feedback-bar.show{display:flex}
+.feedback-bar.correct{background:var(–green-dim);border:1px solid rgba(34,211,160,.3);color:var(–green)}
+.feedback-bar.incorrect{background:var(–red-dim);border:1px solid rgba(240,92,122,.3);color:var(–red)}
+
+/* xp toast */
+.xp-toast{
+position:fixed;top:70px;right:16px;z-index:300;
+background:var(–gold-dim);border:1px solid var(–gold-border);
+border-radius:var(–rfull);padding:8px 16px;
+font-weight:800;font-size:.9rem;color:var(–gold);
+pointer-events:none;
+animation:countUp .4s cubic-bezier(.34,1.56,.64,1) both;
+display:none;
+}
+
+/* ═══════════════════════════════════════
+LEVEL UP OVERLAY
+═══════════════════════════════════════ */
+.levelup-overlay{
+display:none;
+position:fixed;inset:0;z-index:500;
+background:rgba(8,17,31,.97);
+align-items:center;justify-content:center;
+flex-direction:column;text-align:center;padding:32px;
+}
+.levelup-overlay.active{display:flex}
+.levelup-badge{font-size:6rem;animation:levelUp .6s cubic-bezier(.34,1.56,.64,1)}
+.levelup-title{font-family:‘Syne’,sans-serif;font-size:2.5rem;font-weight:800;color:var(–gold);margin:16px 0 8px}
+.levelup-sub{font-size:1.1rem;color:var(–silver);margin-bottom:32px}
+.confetti-container{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.confetti-piece{
+position:absolute;width:8px;height:8px;
+border-radius:2px;animation:confetti 2.5s ease-out both;
+}
+
+/* ═══════════════════════════════════════
+RESULTS SCREEN
+═══════════════════════════════════════ */
+.results-screen{
+display:none;flex-direction:column;
+background:var(–ink);min-height:100vh;
+padding:20px 16px;
+}
+.results-screen.active{display:flex}
+.results-inner{max-width:700px;margin:0 auto;width:100%}
+.result-header{text-align:center;padding:32px 0}
+.result-score-ring{
+width:130px;height:130px;border-radius:50%;
+border:4px solid var(–gold);
+display:flex;flex-direction:column;align-items:center;justify-content:center;
+margin:0 auto 16px;background:var(–gold-dim);
+animation:levelUp .5s cubic-bezier(.34,1.56,.64,1);
+}
+.result-pct{font-family:‘Syne’,sans-serif;font-size:2.2rem;font-weight:800;color:var(–gold)}
+.result-label{font-size:.75rem;color:var(–silver);font-weight:600}
+.result-msg{font-family:‘Syne’,sans-serif;font-size:1.3rem;font-weight:800;color:var(–white);margin-bottom:6px}
+.result-sub{font-size:.9rem;color:var(–silver)}
+.result-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.result-stat{background:var(–ink2);border:1px solid var(–border);border-radius:var(–r12);padding:14px 8px;text-align:center}
+.result-stat .n{font-family:‘Syne’,sans-serif;font-size:1.6rem;font-weight:800}
+.result-stat .l{font-size:.7rem;color:var(–silver);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+.result-stat.c .n{color:var(–green)}
+.result-stat.w .n{color:var(–red)}
+.result-stat.x .n{color:var(–gold)}
+.result-xp-earned{
+background:var(–gold-dim);border:1px solid var(–gold-border);
+border-radius:var(–r16);padding:14px;margin-bottom:16px;
+display:flex;align-items:center;gap:12px;
+}
+.result-xp-num{font-family:‘Syne’,sans-serif;font-size:1.8rem;font-weight:800;color:var(–gold)}
+.result-xp-info .label{font-size:.78rem;font-weight:700;color:var(–gold);text-transform:uppercase;letter-spacing:.06em}
+.result-xp-info .sub{font-size:.85rem;color:var(–silver2);margin-top:2px}
+.result-btns{display:grid;gap:10px}
+
+/* ═══════════════════════════════════════
+BADGES SECTION
+═══════════════════════════════════════ */
+.badges-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:12px;padding-top:4px}
+.badge-item{
+background:var(–ink2);border:2px solid var(–border);
+border-radius:var(–r16);padding:16px 8px;
+text-align:center;transition:all .25s;
+cursor:default;
+}
+.badge-item.earned{border-color:var(–border2);background:var(–gold-dim)}
+.badge-item.earned:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(240,180,41,.2)}
+.badge-icon{font-size:2rem;margin-bottom:6px;display:block;transition:transform .3s}
+.badge-item.earned:hover .badge-icon{animation:bounce 1s ease-in-out infinite}
+.badge-item:not(.earned){opacity:.35;filter:grayscale(1)}
+.badge-name{font-size:.72rem;font-weight:700;color:var(–white)}
+.badge-desc{font-size:.65rem;color:var(–silver);margin-top:3px;line-height:1.4}
+.badge-lock{font-size:.75rem;color:var(–silver);margin-top:4px;opacity:.5}
+.section-subtitle{font-size:.88rem;color:var(–silver);margin-bottom:16px}
+
+/* ═══════════════════════════════════════
+FICHES & INFRACTIONS
+═══════════════════════════════════════ */
+.search-bar{
+width:100%;padding:12px 18px;
+background:var(–ink2);border:1px solid var(–border);
+border-radius:var(–rfull);color:var(–white);
+font-family:‘Plus Jakarta Sans’,sans-serif;font-size:.95rem;
+outline:none;margin-bottom:14px;transition:all .2s;
+}
+.search-bar::placeholder{color:var(–silver)}
+.search-bar:focus{border-color:var(–border2);box-shadow:0 0 0 3px var(–gold-dim)}
+
+.accordion-list{display:grid;gap:10px}
+.accordion-item{
+background:var(–ink2);border:1px solid var(–border);
+border-radius:var(–r16);overflow:hidden;cursor:pointer;
+transition:all .2s ease;
+}
+.accordion-item:hover{border-color:var(–border2);transform:translateX(4px)}
+.accordion-head{
+padding:14px 16px;
+display:flex;justify-content:space-between;align-items:center;gap:10px;
+}
+.accordion-title{font-weight:700;font-size:.93rem;color:var(–gold)}
+.accordion-arrow{color:var(–silver);font-size:.7rem;transition:transform .25s;flex-shrink:0}
+.accordion-item.open .accordion-arrow{transform:rotate(90deg)}
+.accordion-body{
+display:none;padding:0 16px 16px;
+border-top:1px solid var(–border);
+animation:fadeUp .25s ease;font-size:.88rem;color:var(–silver2);line-height:1.75;
+}
+.accordion-item.open .accordion-body{display:block}
+.accordion-body strong{color:var(–white)}
+.accordion-body p{margin-bottom:8px}
+
+/* 3-elem grid */
+.elem-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+@media(max-width:480px){.elem-row{grid-template-columns:1fr}}
+.elem-block{background:var(–ink3);border-radius:var(–r8);padding:10px 12px;border:1px solid var(–border)}
+.elem-lbl{font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:var(–silver);font-weight:700;margin-bottom:5px}
+.elem-txt{font-size:.82rem;color:var(–silver2);line-height:1.6}
+
+/* mnemo */
+.mnemo-box{
+margin-top:10px;padding:12px 14px;
+background:var(–gold-dim);border:1px solid var(–gold-border);
+border-radius:var(–r8);
+}
+.mnemo-lbl{font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(–gold);font-weight:700;margin-bottom:5px;display:flex;align-items:center;gap:5px}
+.mnemo-txt{font-size:.85rem;color:var(–gold2);font-weight:600;font-style:italic;line-height:1.6}
+.mnemo-sub{font-size:.82rem;color:var(–silver2);margin-top:6px;line-height:1.6}
+
+/* oral */
+.oral-grid{display:grid;gap:10px}
+.mode-toggle{display:flex;background:var(–ink2);border:1px solid var(–border);border-radius:var(–rfull);padding:3px;gap:2px;margin-bottom:14px;width:fit-content}
+.mode-btn{background:transparent;border:none;padding:8px 18px;border-radius:var(–rfull);font-family:‘Plus Jakarta Sans’,sans-serif;font-size:.85rem;font-weight:600;color:var(–silver);cursor:pointer;transition:all .2s;white-space:nowrap}
+.mode-btn.active{background:linear-gradient(135deg,var(–gold),#d4920a);color:var(–ink)}
+.oral-count{font-size:.83rem;color:var(–silver);font-weight:600;margin-bottom:10px}
+
+/* ═══════════════════════════════════════
+SCORES / LEADERBOARD
+═══════════════════════════════════════ */
+.score-header{text-align:center;margin-bottom:24px}
+.score-rank-badge{
+width:100px;height:100px;border-radius:50%;
+background:var(–gold-dim);border:3px solid var(–gold);
+display:flex;flex-direction:column;align-items:center;justify-content:center;
+margin:0 auto 12px;font-size:2.5rem;
+animation:glow 3s ease-in-out infinite;
+}
+.score-rank-name{font-family:‘Syne’,sans-serif;font-size:1.2rem;font-weight:800;color:var(–gold)}
+.score-rank-sub{font-size:.82rem;color:var(–silver);margin-top:4px}
+.score-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px}
+.score-card{background:var(–ink2);border:1px solid var(–border);border-radius:var(–r16);padding:16px;text-align:center}
+.score-card .n{font-family:‘Syne’,sans-serif;font-size:2rem;font-weight:800;margin-bottom:4px}
+.score-card .l{font-size:.72rem;color:var(–silver);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.score-card.gold .n{color:var(–gold)}
+.score-card.blue .n{color:var(–blue2)}
+.score-card.green .n{color:var(–green)}
+.score-card.purple .n{color:var(–purple)}
+
+/* conseil du pro */
+.pro-tip{
+background:var(–purple-dim);border:1px solid rgba(167,139,250,.2);
+border-radius:var(–r16);padding:16px;margin-bottom:14px;
+display:flex;gap:12px;align-items:flex-start;
+}
+.pro-tip-icon{font-size:1.4rem;flex-shrink:0}
+.pro-tip-label{font-size:.72rem;font-weight:700;color:var(–purple);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+.pro-tip-text{font-size:.88rem;color:var(–silver2);line-height:1.65}
+.pro-tip-text strong{color:var(–white)}
+
+/* ═══════════════════════════════════════
+MISC
+═══════════════════════════════════════ */
+.sec-header{
+font-family:‘Syne’,sans-serif;font-size:1.35rem;font-weight:800;
+color:var(–white);margin-bottom:4px;
+}
+.divider{height:1px;background:var(–border);margin:20px 0}
+.empty{text-align:center;padding:40px 20px;color:var(–silver);font-size:.9rem}
+.hidden{display:none!important}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(–ink2)}
+::-webkit-scrollbar-thumb{background:var(–ink4);border-radius:var(–rfull)}
+::-webkit-scrollbar-thumb:hover{background:var(–gold)}
+</style>
+
+</head>
+<body>
+
+<!-- ═══ TOPBAR ═══ -->
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-brand">⚖️ OPJ Élite</div>
+    <div class="topbar-stats">
+      <div class="topbar-stat xp"><span class="icon">⚡</span><span id="topXP">0</span></div>
+      <div class="topbar-stat streak"><span class="icon streak-flame">🔥</span><span id="topStreak">0</span></div>
+      <div class="topbar-stat hearts">
+        <div class="hearts-display" id="topHearts"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ WRAP ═══ -->
+
+<div class="wrap">
+
+  <!-- ════════ HOME ════════ -->
+
+  <section id="homeSection" class="section active">
+    <div class="hero anim-fadeup">
+      <div class="hero-rank">🏅 <span id="heroRankName">Gardien de la Paix</span></div>
+      <div class="hero-name">Niveau <span id="heroLevel">1</span> — <span id="heroLevelName">Aspirant OPJ</span></div>
+      <div class="hero-xp-track"><div class="hero-xp-fill" id="heroXpFill" style="width:0%"></div></div>
+      <div class="hero-xp-label"><span id="heroXpCurrent">0</span> / <span id="heroXpNext">300</span> XP pour le prochain niveau</div>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="hero-stat-num" id="hTotalXP">0</div><div class="hero-stat-lbl">XP Total</div></div>
+        <div class="hero-stat"><div class="hero-stat-num" id="hStreak">0</div><div class="hero-stat-lbl">Jours ↗</div></div>
+        <div class="hero-stat"><div class="hero-stat-num" id="hAccuracy">—</div><div class="hero-stat-lbl">Réussite</div></div>
+      </div>
+    </div>
+
+```
+<div id="dailyTip" class="daily-tip"></div>
+
+<div class="modules-header">
+  <div>
+    <div class="modules-title">📚 Modules d'entraînement</div>
+    <div class="modules-sub">Choisissez votre domaine</div>
+  </div>
+</div>
+<div class="module-grid">
+  <div class="module-card c-blue" onclick="startModule('general')">
+    <span class="m-icon">📋</span>
+    <div class="m-name">Général</div>
+    <div class="m-count" id="modGenCount">40 questions</div>
+  </div>
+  <div class="module-card c-gold" onclick="startModule('infractions')">
+    <span class="m-icon">⚖️</span>
+    <div class="m-name">Infractions</div>
+    <div class="m-count">Éléments const.</div>
+  </div>
+  <div class="module-card c-green" onclick="startModule('procedure')">
+    <span class="m-icon">🔍</span>
+    <div class="m-name">Procédure</div>
+    <div class="m-count">GAV / Perquis.</div>
+  </div>
+  <div class="module-card c-purple" onclick="startModule('expert')">
+    <span class="m-icon">🎯</span>
+    <div class="m-name">Expert</div>
+    <div class="m-count">CDO / CRPC</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+<div class="pro-tip anim-fadeup" id="proTipHome"></div>
+```
+
+  </section>
+
+  <!-- ════════ PARCOURS ════════ -->
+
+  <section id="parcoursSection" class="section">
+    <div class="sec-header">🗺️ Parcours OPJ</div>
+    <p class="section-subtitle" style="color:var(--silver);font-size:.88rem;margin-bottom:16px">Progressez du gardien de la paix jusqu'au rang d'élite</p>
+    <div class="levels-path" id="levelsList"></div>
+  </section>
+
+  <!-- ════════ FICHES ════════ -->
+
+  <section id="fichesSection" class="section">
+    <div class="sec-header">📚 Fiches & Infractions</div>
+    <p class="section-subtitle" style="color:var(--silver);font-size:.88rem;margin-bottom:12px">Toutes les fiches avec mémos mnémotechniques</p>
+    <div class="mode-toggle">
+      <button class="mode-btn active" onclick="switchFicheMode('infractions',this)">⚖️ Infractions</button>
+      <button class="mode-btn" onclick="switchFicheMode('fiches',this)">📋 Procédure</button>
+      <button class="mode-btn" onclick="switchFicheMode('oral',this)">🎤 Oral</button>
+    </div>
+    <input type="search" id="ficheSearch" class="search-bar" placeholder="Rechercher : meurtre, GAV, flagrance, nullité…" oninput="filterFiches()">
+    <div id="infractionsContent" class="accordion-list"></div>
+    <div id="fichesContent" class="accordion-list hidden"></div>
+    <div id="oralContent" class="oral-grid hidden"></div>
+  </section>
+
+  <!-- ════════ BADGES ════════ -->
+
+  <section id="badgesSection" class="section">
+    <div class="sec-header">🏆 Badges & Succès</div>
+    <p class="section-subtitle" style="color:var(--silver);font-size:.88rem;margin-bottom:16px">Déverrouillez des récompenses en progressant</p>
+    <div class="badges-grid" id="badgesGrid"></div>
+  </section>
+
+  <!-- ════════ SCORES ════════ -->
+
+  <section id="scoresSection" class="section">
+    <div class="score-header">
+      <div class="score-rank-badge" id="scoreRankBadge">🎓</div>
+      <div class="score-rank-name" id="scoreRankName">—</div>
+      <div class="score-rank-sub" id="scoreRankSub">Niveau 1 — OPJ Élite</div>
+    </div>
+    <div class="score-grid">
+      <div class="score-card gold"><div class="n" id="scXP">0</div><div class="l">XP Total</div></div>
+      <div class="score-card blue"><div class="n" id="scLevel">1</div><div class="l">Niveau</div></div>
+      <div class="score-card green"><div class="n" id="scStreak">0</div><div class="l">Jours Streak</div></div>
+      <div class="score-card purple"><div class="n" id="scAccuracy">—</div><div class="l">% Réussite</div></div>
+    </div>
+    <div style="margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <span style="font-size:.85rem;font-weight:700;color:var(--silver2)">Progression vers le prochain niveau</span>
+        <span style="font-size:.82rem;color:var(--gold);font-weight:700" id="scLevelPct">0%</span>
+      </div>
+      <div style="height:10px;background:var(--ink3);border-radius:var(--rfull);overflow:hidden">
+        <div id="scLevelBar" style="height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:var(--rfull);transition:width 1s ease;width:0%"></div>
+      </div>
+    </div>
+    <div id="proTipsBlock"></div>
+    <button class="btn btn-ghost btn-full" onclick="if(confirm('Remettre tous vos progrès à zéro ?')) resetAll()">🗑️ Réinitialiser les progrès</button>
+  </section>
+
+</div><!-- /wrap -->
+
+<!-- ═══ BOTTOM NAV ═══ -->
+
+<nav class="bottom-nav">
+  <div class="bottom-nav-inner">
+    <button class="nav-item active" data-tab="home" onclick="goTab('home',this)">
+      <span class="nav-icon">🏠</span><span>Accueil</span>
+    </button>
+    <button class="nav-item" data-tab="parcours" onclick="goTab('parcours',this)">
+      <span class="nav-icon">🗺️</span><span>Parcours</span>
+    </button>
+    <button class="nav-item" data-tab="fiches" onclick="goTab('fiches',this)">
+      <span class="nav-icon">📚</span><span>Fiches</span>
+    </button>
+    <button class="nav-item" data-tab="badges" onclick="goTab('badges',this)">
+      <span class="nav-icon">🏆</span><span>Badges</span>
+    </button>
+    <button class="nav-item" data-tab="scores" onclick="goTab('scores',this)">
+      <span class="nav-icon">📊</span><span>Stats</span>
+    </button>
+  </div>
+</nav>
+
+<!-- ═══ QUIZ OVERLAY ═══ -->
+
+<div class="quiz-overlay" id="quizOverlay">
+  <div class="quiz-header">
+    <button class="quiz-close" onclick="closeQuiz()">✕</button>
+    <div class="quiz-progress-track"><div class="quiz-progress-fill" id="qProgressFill" style="width:0%"></div></div>
+    <div class="quiz-hearts-header" id="qHeartsHeader"></div>
+  </div>
+  <div class="quiz-body" id="quizBody">
+    <!-- questions injected here -->
+  </div>
+  <div class="quiz-footer">
+    <div class="quiz-footer-inner">
+      <div class="feedback-bar" id="feedbackBar"></div>
+      <button id="btnNext" class="btn btn-gold btn-full" onclick="nextQ()" disabled>Sélectionnez une réponse</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ RESULTS SCREEN ═══ -->
+
+<div class="results-screen" id="resultsScreen">
+  <div class="results-inner">
+    <div class="result-header">
+      <div class="result-score-ring">
+        <div class="result-pct" id="rPct">—</div>
+        <div class="result-label">Score</div>
+      </div>
+      <div class="result-msg" id="rMsg"></div>
+      <div class="result-sub" id="rSub"></div>
+    </div>
+    <div class="result-xp-earned">
+      <div class="result-xp-num" id="rXP">+0 XP</div>
+      <div class="result-xp-info">
+        <div class="label">Points gagnés</div>
+        <div class="sub" id="rXPSub">Continuez à progresser !</div>
+      </div>
+    </div>
+    <div class="result-stats">
+      <div class="result-stat c"><div class="n" id="rCorrect">0</div><div class="l">Correctes</div></div>
+      <div class="result-stat w"><div class="n" id="rWrong">0</div><div class="l">Fausses</div></div>
+      <div class="result-stat x"><div class="n" id="rXPStat">+0</div><div class="l">XP Gagnés</div></div>
+    </div>
+    <div class="result-btns">
+      <button class="btn btn-gold btn-full" onclick="retryQuiz()">🔄 Recommencer</button>
+      <button class="btn btn-ghost btn-full" onclick="closeResults()">← Retour à l'accueil</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ LEVEL UP OVERLAY ═══ -->
+
+<div class="levelup-overlay" id="levelupOverlay">
+  <div class="confetti-container" id="confettiContainer"></div>
+  <div class="levelup-badge" id="levelupBadge">🎓</div>
+  <div class="levelup-title" id="levelupTitle">Niveau Supérieur !</div>
+  <div class="levelup-sub" id="levelupSub">Vous avez atteint un nouveau grade</div>
+  <button class="btn btn-gold" onclick="closeLevelUp()">Continuer →</button>
+</div>
+
+<!-- ═══ XP TOAST ═══ -->
+
+<div class="xp-toast" id="xpToast"></div>
+
+<script>
+// ══════════════════════════════════════════════════
+//  UTILITY
+// ══════════════════════════════════════════════════
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function clamp(v,min,max){return Math.max(min,Math.min(max,v))}
+function $(id){return document.getElementById(id)}
+
+// ══════════════════════════════════════════════════
+//  LEVELS SYSTEM
+// ══════════════════════════════════════════════════
+const LEVELS=[
+  {lvl:1,name:'Aspirant OPJ',badge:'🎓',xpNeeded:0,nextXP:300,rank:'Gardien de la Paix',modules:['general'],desc:'Première prise de contact avec le droit pénal et la procédure'},
+  {lvl:2,name:'Élève Officier',badge:'📖',xpNeeded:300,nextXP:700,rank:'Gardien de la Paix',modules:['general','procedure'],desc:'Maîtrise des bases de la procédure pénale et du CPP'},
+  {lvl:3,name:'Officier Stagiaire',badge:'🔍',xpNeeded:700,nextXP:1400,rank:'Brigadier',modules:['general','procedure','infractions'],desc:'Compréhension des infractions et de leurs éléments constitutifs'},
+  {lvl:4,name:'Officier de Patrouille',badge:'🚔',xpNeeded:1400,nextXP:2500,rank:'Brigadier-Chef',modules:['general','procedure','infractions'],desc:'Maîtrise des gardes à vue, perquisitions et saisies'},
+  {lvl:5,name:'Officier Judiciaire',badge:'⚖️',xpNeeded:2500,nextXP:4000,rank:'Brigadier-Chef',modules:['all'],desc:'Niveau intermédiaire — infractions complexes et procédures spéciales'},
+  {lvl:6,name:'Officier Confirmé',badge:'🏛️',xpNeeded:4000,nextXP:6000,rank:'Major',modules:['all'],desc:'CDO, techniques spéciales d\'enquête, commissions rogatoires'},
+  {lvl:7,name:'Inspecteur Principal',badge:'🎖️',xpNeeded:6000,nextXP:9000,rank:'Major',modules:['all','expert'],desc:'Maîtrise des sujets d\'annales et des questions piège'},
+  {lvl:8,name:'Commandant d\'Enquête',badge:'🦅',xpNeeded:9000,nextXP:13000,rank:'Capitaine',modules:['all','expert'],desc:'Maîtrise expert — jurisprudence, CRPC, nullités, CDO'},
+  {lvl:9,name:'Commissaire Adjoint',badge:'⭐',xpNeeded:13000,nextXP:18000,rank:'Commandant',modules:['all','expert'],desc:'Prêt pour l\'épreuve — tous les modules maîtrisés'},
+  {lvl:10,name:'OPJ Élite',badge:'👑',xpNeeded:18000,nextXP:999999,rank:'Commissaire',modules:['all','expert'],desc:'Le plus haut grade — maîtrise totale du Bloc OPJ'},
+];
+
+// ══════════════════════════════════════════════════
+//  BADGES
+// ══════════════════════════════════════════════════
+const BADGES_DEF=[
+  {id:'first_blood',icon:'🎯',name:'Premier tir',desc:'Répondre à la première question',cond:s=>s.totalAnswered>=1},
+  {id:'streak3',icon:'🔥',name:'3 jours de feu',desc:'Streak de 3 jours',cond:s=>s.streak>=3},
+  {id:'streak7',icon:'🌟',name:'Semaine parfaite',desc:'Streak de 7 jours',cond:s=>s.streak>=7},
+  {id:'streak30',icon:'💎',name:'Mois de discipline',desc:'Streak de 30 jours',cond:s=>s.streak>=30},
+  {id:'perfect10',icon:'✨',name:'Sans faute',desc:'10 bonnes réponses d\'affilée',cond:s=>s.maxStreak>=10},
+  {id:'perfect20',icon:'🏆',name:'Invincible',desc:'20 bonnes réponses d\'affilée',cond:s=>s.maxStreak>=20},
+  {id:'scholar',icon:'📚',name:'Érudit',desc:'100 questions répondues',cond:s=>s.totalAnswered>=100},
+  {id:'master',icon:'🎓',name:'Maîtrise',desc:'500 questions répondues',cond:s=>s.totalAnswered>=500},
+  {id:'accuracy80',icon:'🎪',name:'Précision',desc:'80% de réussite globale',cond:s=>s.totalAnswered>=20&&(s.totalCorrect/s.totalAnswered)>=.8},
+  {id:'accuracy95',icon:'💫',name:'Sniper',desc:'95% de réussite globale',cond:s=>s.totalAnswered>=20&&(s.totalCorrect/s.totalAnswered)>=.95},
+  {id:'lvl3',icon:'🚀',name:'Officier Stagiaire',desc:'Atteindre le niveau 3',cond:s=>s.level>=3},
+  {id:'lvl5',icon:'⚖️',name:'Officier Judiciaire',desc:'Atteindre le niveau 5',cond:s=>s.level>=5},
+  {id:'lvl8',icon:'🦅',name:'Commandant',desc:'Atteindre le niveau 8',cond:s=>s.level>=8},
+  {id:'lvl10',icon:'👑',name:'OPJ Élite',desc:'Atteindre le niveau 10',cond:s=>s.level>=10},
+  {id:'xp1000',icon:'⚡',name:'1000 XP',desc:'Accumuler 1000 XP',cond:s=>s.xp>=1000},
+  {id:'xp5000',icon:'⚡',name:'5000 XP',desc:'Accumuler 5000 XP',cond:s=>s.xp>=5000},
+  {id:'infraction_pro',icon:'🔨',name:'Expert infractions',desc:'Compléter un quiz infractions avec ≥80%',cond:s=>s.bestInfractions>=80},
+  {id:'procedure_pro',icon:'📋',name:'Proc. maîtrisée',desc:'Compléter un quiz procédure avec ≥80%',cond:s=>s.bestProcedure>=80},
+  {id:'no_heart_loss',icon:'❤️',name:'Invulnérable',desc:'Terminer un quiz sans perdre de cœur',cond:s=>s.noHeartLossQuiz>=1},
+];
+
+// ══════════════════════════════════════════════════
+//  TIPS & CONSEILS
+// ══════════════════════════════════════════════════
+const TIPS=[
+  {icon:'⚖️',label:'Astuce procédure',text:'En <strong>flagrance</strong>, les perquisitions sont libres de 6h à 21h. La nuit, il faut une <strong>nécessité impérieuse</strong> (art. 59 CPP). Retenez : flagrance = liberté, préliminaire = autorisation.'},
+  {icon:'🧠',label:'Mémo GAV',text:'Les <strong>9 droits GAV</strong> : Silence – Avocat – Médecin – Étranger – Tiers – Avis famille – Observations – Interprète – Formulaire. Mémo : <strong>« SAMET + AFOI »</strong>.'},
+  {icon:'🔍',label:'Conseil oral',text:'Pour l\'épreuve orale, appuyez-vous toujours sur <strong>un article précis du CPP</strong>. « Selon l\'art. 62-2 CPP… » montre que vous maîtrisez les fondamentaux textuels.'},
+  {icon:'📋',label:'Piège fréquent',text:'Le <strong>recel</strong> (art. 321-1 CP) exige la <strong>connaissance de l\'origine frauduleuse</strong>. Sans cette connaissance, pas de recel. C\'est l\'élément moral indispensable.'},
+  {icon:'⏱️',label:'Durées à retenir',text:'GAV droit commun : <strong>48h max</strong>. CDO/terrorisme : <strong>96h</strong> (voire 144h). Mineurs 10-13 ans : <strong>12h + 12h</strong>. Ces chiffres tombent souvent à l\'examen !'},
+  {icon:'🎯',label:'Technique de révision',text:'Utilisez la <strong>répétition espacée</strong> : révisez une notion le jour J, puis J+2, J+7, J+21. C\'est la méthode la plus efficace pour mémoriser à long terme.'},
+  {icon:'⚡',label:'Priorité de révision',text:'Concentrez-vous d\'abord sur les <strong>3 thèmes les plus fréquents</strong> : Garde à vue (art. 62-2 ss), Perquisitions (art. 56-59), Infractions récurrentes (vol, recel, violences).'},
+  {icon:'🏛️',label:'Jurisprudence clé',text:'Retenez : principe de <strong>loyauté des preuves</strong> (Cass. Crim. + CEDH art. 6). Toute preuve obtenue par stratagème déloyal ou provocation policière est nulle.'},
+  {icon:'📊',label:'Classification',text:'Mémo tripartite : <strong>Crime = Cour d\'Assises (≥10 ans) = 20 ans prescription</strong>. Délit = Tribunal Correctionnel = 6 ans. Contravention = Tribunal de Police = 1 an.'},
+  {icon:'💡',label:'CDO : ce qu\'il faut savoir',text:'La <strong>CDO</strong> (art. 706-73 CPP) ouvre un régime dérogatoire : GAV 96h, perquisitions nocturnes, sonorisations, géolocalisation. Listez les infractions concernées : stups, proxénétisme, terrorisme…'},
+];
+
+const PRO_TIPS=[
+  {icon:'🎖️',text:'<strong>Méthode des 5 lectures :</strong> lisez un article du CPP 5 fois à intervalles croissants. La 5e lecture sera presque automatique. Commencez par l\'art. 62-2 sur la GAV.'},
+  {icon:'🧩',text:'<strong>Associez textes et situations :</strong> à chaque article, imaginez une situation concrète de terrain. L\'art. 59 CPP = "il est 23h, flagrance, besoin absolu" → perquisition nocturne.'},
+  {icon:'🎯',text:'<strong>La règle des 3 éléments :</strong> pour chaque infraction, récitez toujours légal – matériel – moral dans cet ordre. Les correcteurs apprécient la rigueur méthodologique.'},
+  {icon:'📝',text:'<strong>Rédigez un plan type :</strong> pour l\'oral, préparez un plan en 3 parties (I. Définition légale, II. Éléments constitutifs, III. Régime procédural). Applicable à n\'importe quelle question.'},
+  {icon:'⚡',text:'<strong>Focus sur les délais :</strong> créez une fiche uniquement avec les délais CPP. 3h (avis famille), 12h/24h/48h (GAV), 96h (CDO), 8j/8j (flagrance). Ces chiffres sont décisifs.'},
+];
+
+// ══════════════════════════════════════════════════
+//  QUESTIONS DATA
+// ══════════════════════════════════════════════════
+const RAW=[
+  {q:"Quelles sont les missions de la Police Judiciaire selon le CPP ?",opts:["Uniquement constater les infractions","Constater les infractions, rassembler les preuves, rechercher les auteurs","Surveiller la population","Protéger les bâtiments publics"],c:1,tag:"Procédure",src:"Formation OPJ"},
+  {q:"Qui dirige, contrôle et surveille la mission de la Police Judiciaire ?",opts:["Le Ministre de l'Intérieur seul","Le Procureur dirige, le Procureur Général surveille, la Chambre de l'instruction contrôle","Uniquement les commissaires","Le Préfet de police"],c:1,tag:"Procédure",src:"Formation OPJ"},
+  {q:"Quelle est la durée maximale d'une garde à vue simple (hors terrorisme) ?",opts:["12 heures","24 heures renouvelable une fois = 48h max","48 heures non renouvelable","72 heures"],c:1,tag:"GAV",src:"Formation OPJ"},
+  {q:"Qui peut autoriser une perquisition domiciliaire HORS flagrance ?",opts:["Le Procureur de la République","Le Juge des Libertés et de la Détention (JLD)","L'OPJ seul","Le maire"],c:1,tag:"Perquisition",src:"Formation OPJ"},
+  {q:"Quelle est la définition exacte de la flagrance selon l'art. 53 CPP ?",opts:["Uniquement infraction en cours","Uniquement infraction juste commise","Infraction en cours OU venant de se commettre OU clameur publique OU possession traces","Aucune définition légale"],c:2,tag:"Flagrance",src:"CNJ Oral"},
+  {q:"Quelle est la durée de l'enquête de flagrant délit ?",opts:["24 heures uniquement","8 jours + prolongation 8 jours si infraction ≥5 ans sur autorisation PR","Aucune limite","48 heures maximum"],c:1,tag:"Flagrance",src:"Formation OPJ"},
+  {q:"Qui peut interpeller en flagrant délit selon l'art. 73 CPP ?",opts:["Uniquement les OPJ","OPJ, APJ et tout citoyen dans un lieu public","Seulement les commissaires","Uniquement les magistrats"],c:1,tag:"Flagrance",src:"Formation OPJ"},
+  {q:"Quelles sont les 3 conditions CUMULATIVES pour placer en garde à vue ?",opts:["Crime uniquement","Infraction punie d'emprisonnement + 1 objectif art.62-2 + raisons plausibles de soupçonner","Décision du Procureur uniquement","Flagrance obligatoire"],c:1,tag:"GAV",src:"Formation OPJ"},
+  {q:"Quels sont les 6 objectifs légaux de la GAV (art. 62-2 CPP) ?",opts:["Uniquement les investigations","Investigations / Présentation PR / Empêcher modification preuves / Pression témoins-victimes / Concertation / Faire cesser infraction","Décision discrétionnaire OPJ","Aucun objectif légal"],c:1,tag:"GAV",src:"Formation OPJ"},
+  {q:"Quel est le délai maximum pour l'avis famille/tiers en GAV ?",opts:["24 heures","3 heures (obligation de moyen)","Aucun délai","1 heure"],c:1,tag:"GAV",src:"Formation OPJ"},
+  {q:"Quelle est la durée de retenue pour mineurs 10-13 ans ?",opts:["24h comme majeurs","12h max + 12h prolongation exceptionnelle (≥5 ans, décision magistrat)","Aucune retenue possible","48h"],c:1,tag:"Mineurs",src:"Formation OPJ"},
+  {q:"Examen médical obligatoire pour mineurs en GAV ?",opts:["Jamais obligatoire","OBLIGATOIRE et IMMÉDIAT pour les moins de 16 ans (dans les 3h)","Uniquement si demandé","Seulement si blessures"],c:1,tag:"Mineurs",src:"Formation OPJ"},
+  {q:"En enquête préliminaire, conditions pour perquisition SANS assentiment ?",opts:["Impossible sans assentiment","Infraction ≥3 ans + autorisation écrite et motivée JLD sur réquisition PR","Décision OPJ seul","Uniquement en flagrance"],c:1,tag:"Perquisition",src:"Formation OPJ"},
+  {q:"Actes NE pouvant PAS être délégués à l'OPJ en commission rogatoire ?",opts:["Toutes les auditions","Mandats / Réquisition expert / Interrogatoires ME / Audition PC (sauf demande) / Perquis. secret pro","Uniquement perquisitions","Aucune restriction"],c:1,tag:"CR",src:"CNJ Oral"},
+  {q:"Valeur juridique d'un PV signé par un OPJ (art. 429 CPP) ?",opts:["Simple témoignage","Foi publique jusqu'à preuve contraire","Valeur absolue","Aucune valeur"],c:1,tag:"PV",src:"Formation OPJ"},
+  {q:"LOPMI — quels actes peuvent être établis par les APJ en commission rogatoire ?",opts:["Aucun acte","Réquisitions STAD + opérateurs télécom (autorisation JI) + interceptions + retranscriptions","Toutes réquisitions","Uniquement constatations"],c:1,tag:"CR",src:"Formation OPJ"},
+  {q:"Délai de transmission de la procédure au Procureur (art. 19 CPP) ?",opts:["30 jours","Sans délai dès clôture (principe de célérité)","7 jours","Aucun délai légal"],c:1,tag:"PV",src:"Formation OPJ"},
+  {q:"Qu'est-ce que le principe de loyauté des preuves ?",opts:["Preuves par tout moyen","Preuves légales uniquement, sans stratagème déloyal ni provocation","Uniquement aveux","Concept inexistant"],c:1,tag:"Procédure",src:"Jurisprudence"},
+  {q:"Un OPJ peut-il refuser un ordre manifestement illégal ?",opts:["Non, obéissance absolue","Oui, devoir de refus (art. 122-4 CP)","Seulement si danger physique","Jamais"],c:1,tag:"Déontologie",src:"CP"},
+  {q:"Durée de validité de l'habilitation OPJ ?",opts:["À vie","5 ans renouvelable","10 ans","3 ans"],c:1,tag:"Statut",src:"Formation OPJ"},
+  {q:"Éléments du MEURTRE (art. 221-1 CP) ?",opts:["Uniquement la mort","Acte positif violence + victime humaine vivante + lien causalité décès + intention homicide","Décision magistrat","Préméditation obligatoire"],c:1,tag:"Infraction",src:"CNJ Infractions"},
+  {q:"Éléments du RECEL (art. 321-1 CP) ?",opts:["Posséder un objet volé","Acte matériel (4 formes) + bien issu d'infraction tierce + connaissance origine frauduleuse","Recevoir cadeau","Acheter occasion"],c:1,tag:"Infraction",src:"CNJ Infractions"},
+  {q:"Éléments de l'ESCROQUERIE (art. 313-1 CP) ?",opts:["Simplement mentir","4 moyens tromperie + remise volontaire + préjudice + dol spécial","Erreur commerciale","Publicité mensongère"],c:1,tag:"Infraction",src:"CNJ Infractions"},
+  {q:"CONDUITE APRÈS USAGE STUPÉFIANTS (art. L.235-1 CR) — éléments ?",opts:["Déclaration suffisante","Conducteur + dépistage positif (salivaire + confirmation) + volonté de conduire","Suspicion uniquement","Aveu obligatoire"],c:1,tag:"Infraction",src:"CNJ Infractions"},
+  {q:"REFUS D'OBTEMPÉRER (art. L.233-1 CR) ?",opts:["Circuler sans permis","Sommation d'arrêt par force publique habilitée + refus volontaire","Contester amende","Rouler vite"],c:1,tag:"Infraction",src:"CNJ Infractions"},
+  {q:"RÉBELLION (art. 433-6 CP) — éléments ?",opts:["Insulter policier","Victime PDAP/PCMSP en fonction + résistance VIOLENTE + connaissance qualité + volonté s'opposer","Refus passif","Discussion verbale"],c:1,tag:"Infraction",src:"CNJ Infractions"},
+  {q:"DDD dangereuses (art. 322-6 CP) ?",opts:["Simple dommage","Moyen dangereux (feu/explosion) + bien d'autrui + dommage + intention nuire / créer danger","Accident","Négligence"],c:1,tag:"Infraction",src:"CNJ Infractions"},
+  {q:"OUTRAGE (art. 433-5 CP) ?",opts:["Violence physique","Expression outrageante + PDAP/PCMSP en fonction + connaissance qualité + atteinte dignité","Désaccord","Critique légitime"],c:1,tag:"Infraction",src:"CNJ Infractions"},
+  {q:"CHANTAGE (art. 312-10 CP) ?",opts:["Demande d'argent","Menace révélation/imputation + expression menace + objet (remise/signature…) + volonté contraindre","Négociation","Demande légitime"],c:1,tag:"Infraction",src:"CNJ Infractions"},
+  {q:"ABANDON DE FAMILLE (art. 227-3 CP) ?",opts:["Quitter domicile","Obligation légale/judiciaire + défaut paiement >2 mois + volonté ne pas exécuter","Divorce","Séparation"],c:1,tag:"Infraction",src:"CNJ Infractions"},
+  {q:"NON-REPRÉSENTATION D'ENFANT (art. 227-5 CP) ?",opts:["Garder enfant chez soi","Droit reconnu au réclamant + refus représenter mineur + conscience faire échec à ce droit","Vacances prolongées","Retard ponctuel"],c:1,tag:"Infraction",src:"CNJ Infractions"},
+  {q:"HARCÈLEMENT SEXUEL (art. 222-33 CP) ?",opts:["Drague insistante","Agissements répétés connotation sexuelle OU acte unique pression grave + conscience + volonté obtenir acte sexuel","Compliment","Séduction"],c:1,tag:"Infraction",src:"CNJ Infractions"},
+  {q:"EMBUSCADE (art. 222-15-1 CP) ?",opts:["Simple attaque","Préparation caractérisée attaque armée contre PDAP/PCMSP, MÊME si violences non réalisées","Attaque réalisée","Manifestation"],c:1,tag:"Infraction",src:"CNJ Infractions"},
+  {q:"VOL (art. 311-1 CP) — 3 éléments ?",opts:["Uniquement soustraction","Soustraction frauduleuse + chose corporelle d'autrui + animus domini","Dommage causé","Décision juge"],c:1,tag:"Infraction",src:"CNJ Infractions"},
+  {q:"VIOL (art. 222-23 CP) ?",opts:["Attouchement","Pénétration sexuelle imposée + VCMS (Violence/Contrainte/Menace/Surprise) + intention","Contact non consenti","Agression verbale"],c:1,tag:"Infraction",src:"CNJ Infractions"},
+  {q:"ASSOCIATION DE MALFAITEURS (art. 450-1 CP) et intérêt OPJ ?",opts:["Toute bande de 3+","Groupement/entente + infractions ≥5 ans + faits préparatoires. Intérêt : poursuites avant commission + CDO","Toute réunion suspecte","Uniquement terrorisme"],c:1,tag:"Expert",src:"CNJ Oral"},
+  {q:"ENQUÊTE SOUS PSEUDONYME (art. 706-87 CPP) ?",opts:["Pour toute infraction","Infractions graves (stups, traite, terrorisme) + autorisation PR/JI + loyauté preuves et traçabilité","Uniquement crimes humanité","Jamais en procédure"],c:1,tag:"Expert",src:"Formation OPJ"},
+  {q:"PERQUISITIONS CDO — spécificités ?",opts:["Aucune différence","Nuit possible + tout territoire + enregistrement A/V + sonorisations + géolocalisation + autorisation JLD/JI","Durée plus longue","Absence contrôle judiciaire"],c:1,tag:"Expert",src:"CNJ Oral"},
+  {q:"DÉCOUVERTE DE CADAVRE (art. 74 CPP) — pouvoirs OPJ ?",opts:["Simple renseignement","Pouvoirs art. 56-62 CPP pour 8 jours max — cadre transitoire avant bascule flagrance ou préliminaire","Uniquement rapport","Information judiciaire immédiate"],c:1,tag:"Expert",src:"Formation OPJ"},
+  {q:"CRPC — conditions et limites ?",opts:["Applicable tous crimes et délits","Reconnaissance faits + certains délits + peine PR + validation juge + avocat. Exclue : crimes, mineurs, violences graves","Réservé mineurs","Sans avocat obligatoire"],c:1,tag:"Expert",src:"CNJ Oral"},
+];
+
+function buildQ(raw){
+  const ct=raw.opts[raw.c];
+  const sh=shuffle(raw.opts);
+  return{q:raw.q,opts:sh,c:sh.indexOf(ct),tag:raw.tag,src:raw.src};
+}
+
+// ══════════════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════════════
+const DEFAULT_STATE={
+  xp:0,level:1,streak:0,hearts:5,maxHearts:5,
+  lastPlayDate:null,lastStreakDate:null,
+  totalAnswered:0,totalCorrect:0,maxStreak:0,
+  currentCorrectStreak:0,earnedBadges:[],
+  bestInfractions:0,bestProcedure:0,noHeartLossQuiz:0,
+};
+let S=JSON.parse(localStorage.getItem('opj_state_v2')||'null')||{...DEFAULT_STATE};
+
+function saveState(){localStorage.setItem('opj_state_v2',JSON.stringify(S))}
+function resetAll(){localStorage.removeItem('opj_state_v2');S={...DEFAULT_STATE};saveState();location.reload()}
+
+function getLevelDef(xp){
+  let l=LEVELS[0];
+  for(const lv of LEVELS){if(xp>=lv.xpNeeded)l=lv}
+  return l;
+}
+function getLevelByNum(n){return LEVELS.find(l=>l.lvl===n)||LEVELS[0]}
+function getLevelXPRange(xp){
+  const cur=getLevelDef(xp);
+  return{cur:cur.xpNeeded,next:cur.nextXP,progress:cur.nextXP<999999?(xp-cur.xpNeeded)/(cur.nextXP-cur.xpNeeded):1};
+}
+
+function addXP(amount){
+  const oldLvl=getLevelDef(S.xp).lvl;
+  S.xp+=amount;
+  const newLvl=getLevelDef(S.xp);
+  S.level=newLvl.lvl;
+  saveState();
+  if(newLvl.lvl>oldLvl) triggerLevelUp(newLvl);
+}
+
+function updateStreak(){
+  const today=new Date().toDateString();
+  if(S.lastStreakDate===today)return;
+  const yesterday=new Date(Date.now()-864e5).toDateString();
+  if(S.lastStreakDate===yesterday){S.streak++;} else {S.streak=1;}
+  S.lastStreakDate=today;
+  saveState();
+}
+
+// ══════════════════════════════════════════════════
+//  QUIZ ENGINE
+// ══════════════════════════════════════════════════
+let QZ={pool:[],idx:0,score:0,hearts:5,mode:'general',answers:[],noHeartLoss:true};
+const LETTERS=['A','B','C','D'];
+
+function startModule(mode){
+  let raw;
+  if(mode==='general') raw=shuffle(RAW).slice(0,20);
+  else if(mode==='infractions') raw=RAW.filter(r=>r.src==='CNJ Infractions');
+  else if(mode==='procedure') raw=RAW.filter(r=>r.src==='Formation OPJ');
+  else if(mode==='expert') raw=RAW.filter(r=>r.tag==='Expert');
+  else raw=shuffle(RAW).slice(0,20);
+
+  QZ.pool=shuffle(raw).map(buildQ);
+  QZ.idx=0;QZ.score=0;QZ.hearts=S.hearts;QZ.mode=mode;QZ.answers=[];QZ.noHeartLoss=true;
+
+  $('quizOverlay').classList.add('active');
+  renderQuizQuestion();
+}
+
+function renderQuizQuestion(){
+  const q=QZ.pool[QZ.idx];
+  if(!q){showResults();return;}
+
+  const pct=Math.round((QZ.idx/QZ.pool.length)*100);
+  $('qProgressFill').style.width=pct+'%';
+  $('qHeartsHeader').innerHTML=[...Array(S.maxHearts)].map((_,i)=>`<span class="quiz-heart ${i<QZ.hearts?'':'empty'}">❤️</span>`).join('');
+
+  $('quizBody').innerHTML=`
+    <div class="q-category">${q.tag} <span class="pill pill-blue" style="font-size:.68rem">${QZ.idx+1}/${QZ.pool.length}</span></div>
+    <div class="q-text">${q.q}</div>
+    <div class="options" id="opts">
+      ${q.opts.map((o,i)=>`<div class="opt" id="opt${i}" onclick="pickOpt(${i})"><span class="opt-badge">${LETTERS[i]}</span>${o}</div>`).join('')}
+    </div>
+    <div class="expl-box" id="explBox"></div>
+  `;
+
+  const fb=$('feedbackBar');fb.className='feedback-bar';fb.innerHTML='';
+  const btn=$('btnNext');btn.disabled=true;btn.textContent='Sélectionnez une réponse';
+}
+
+function pickOpt(i){
+  if(QZ.answers[QZ.idx]!==undefined)return;
+  QZ.answers[QZ.idx]=i;
+  const q=QZ.pool[QZ.idx];
+  const correct=i===q.c;
+  S.totalAnswered++;
+
+  // style options
+  for(let k=0;k<q.opts.length;k++){
+    const el=$(`opt${k}`);
+    if(!el)continue;
+    el.classList.add('disabled');
+    if(k===q.c)el.classList.add('correct');
+    else if(k===i&&!correct)el.classList.add('incorrect');
+  }
+
+  // explanation
+  const ex=$('explBox');
+  ex.innerHTML=`💡 <strong>Réponse correcte :</strong> ${q.opts[q.c]} <em style="color:var(--silver);font-size:.82rem">— ${q.src}</em>`;
+  ex.classList.add('show');
+
+  const fb=$('feedbackBar');
+  if(correct){
+    QZ.score++;S.totalCorrect++;S.currentCorrectStreak++;
+    if(S.currentCorrectStreak>S.maxStreak)S.maxStreak=S.currentCorrectStreak;
+    fb.innerHTML='✅ Excellent ! Bonne réponse';fb.className='feedback-bar correct show';
+    showXPToast('+10 XP');
+    addXP(10);
+  } else {
+    S.currentCorrectStreak=0;
+    QZ.hearts=Math.max(0,QZ.hearts-1);QZ.noHeartLoss=false;
+    fb.innerHTML='❌ Pas tout à fait — retenez la bonne réponse';fb.className='feedback-bar incorrect show';
+    $('qHeartsHeader').innerHTML=[...Array(S.maxHearts)].map((_,ii)=>`<span class="quiz-heart ${ii<QZ.hearts?'':'empty'}">❤️</span>`).join('');
+    if(QZ.hearts<=0){setTimeout(()=>{showResults(true)},1200);return}
+  }
+
+  const btn=$('btnNext');btn.disabled=false;
+  btn.textContent=QZ.idx<QZ.pool.length-1?'Suivant →':'Voir les résultats 🏆';
+  saveState();checkBadges();
+}
+
+function nextQ(){
+  if(QZ.answers[QZ.idx]===undefined)return;
+  const q=QZ.pool[QZ.idx];
+  QZ.idx++;
+  if(QZ.idx>=QZ.pool.length){showResults(false);return;}
+  renderQuizQuestion();
+}
+
+function showResults(noHearts=false){
+  $('quizOverlay').classList.remove('active');
+  const total=QZ.pool.length;
+  const pct=Math.round((QZ.score/total)*100);
+  const xpEarned=QZ.score*10+(pct>=80?50:0)+(pct>=95?100:0);
+
+  // update best scores
+  if(QZ.mode==='infractions'&&pct>S.bestInfractions){S.bestInfractions=pct}
+  if(QZ.mode==='procedure'&&pct>S.bestProcedure){S.bestProcedure=pct}
+  if(QZ.noHeartLoss)S.noHeartLossQuiz++;
+  S.hearts=S.maxHearts; // restore hearts
+  updateStreak();
+  addXP(xpEarned);
+  saveState();checkBadges();
+
+  $('rPct').textContent=pct+'%';
+  $('rCorrect').textContent=QZ.score;
+  $('rWrong').textContent=total-QZ.score;
+  $('rXPStat').textContent='+'+xpEarned;
+  $('rXP').textContent='+'+xpEarned+' XP';
+  $('rXPSub').textContent=pct>=80?'Bonus perfection inclus ! 🔥':'Atteignez 80% pour le bonus !';
+
+  let msg='',sub='';
+  if(noHearts){msg='💔 Plus de cœurs !';sub='Vous avez épuisé vos cœurs. Réessayez !'}
+  else if(pct>=95){msg='🏆 Performance légendaire !';sub='Vous êtes prêt pour le vrai concours.'}
+  else if(pct>=80){msg='🔥 Excellent niveau !';sub='Continuez sur cette lancée !'}
+  else if(pct>=65){msg='👍 Bon travail !';sub='Révisez les erreurs pour progresser.'}
+  else if(pct>=50){msg='💪 En bonne voie !';sub='Retour sur les fiches conseillé.'}
+  else{msg='📚 Il faut retravailler !';sub='Commencez par les fiches de base.'}
+  $('rMsg').textContent=msg;$('rSub').textContent=sub;
+
+  $('resultsScreen').classList.add('active');
+  updateUI();
+}
+
+function retryQuiz(){
+  $('resultsScreen').classList.remove('active');
+  startModule(QZ.mode);
+}
+
+function closeResults(){
+  $('resultsScreen').classList.remove('active');
+  goTab('home');
+  updateUI();
+}
+
+function closeQuiz(){
+  $('quizOverlay').classList.remove('active');
+  S.hearts=S.maxHearts;saveState();
+}
+
+function showXPToast(text){
+  const t=$('xpToast');t.textContent=text;t.style.display='block';
+  clearTimeout(t._to);t._to=setTimeout(()=>{t.style.display='none'},1500);
+}
+
+// ══════════════════════════════════════════════════
+//  LEVEL UP
+// ══════════════════════════════════════════════════
+function triggerLevelUp(lvDef){
+  spawnConfetti();
+  $('levelupBadge').textContent=lvDef.badge;
+  $('levelupTitle').textContent='Niveau '+lvDef.lvl+' — '+lvDef.name;
+  $('levelupSub').textContent='Vous avez atteint le rang de '+lvDef.rank+' !';
+  $('levelupOverlay').classList.add('active');
+}
+function closeLevelUp(){$('levelupOverlay').classList.remove('active')}
+
+function spawnConfetti(){
+  const c=$('confettiContainer');c.innerHTML='';
+  const colors=['#f0b429','#3d8ef0','#22d3a0','#f05c7a','#a78bfa','#ffd369'];
+  for(let i=0;i<40;i++){
+    const p=document.createElement('div');
+    p.className='confetti-piece';
+    p.style.cssText=`left:${Math.random()*100}%;top:-10px;background:${colors[i%colors.length]};transform:rotate(${Math.random()*360}deg);animation-delay:${Math.random()*1}s;animation-duration:${1.5+Math.random()*1.5}s`;
+    c.appendChild(p);
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  BADGES CHECK
+// ══════════════════════════════════════════════════
+function checkBadges(){
+  BADGES_DEF.forEach(b=>{
+    if(!S.earnedBadges.includes(b.id)&&b.cond(S)){
+      S.earnedBadges.push(b.id);saveState();
+      showXPToast('🏆 Badge : '+b.name);
+    }
+  });
+}
+
+// ══════════════════════════════════════════════════
+//  UI UPDATE
+// ══════════════════════════════════════════════════
+function updateUI(){
+  const lvDef=getLevelDef(S.xp);
+  const range=getLevelXPRange(S.xp);
+  const pct=range.progress*100;
+  const acc=S.totalAnswered>0?Math.round(S.totalCorrect/S.totalAnswered*100):null;
+
+  // topbar
+  $('topXP').textContent=S.xp;
+  $('topStreak').textContent=S.streak;
+  $('topHearts').innerHTML=[...Array(S.maxHearts)].map((_,i)=>`<span class="heart ${i<S.hearts?'':'empty'}">❤️</span>`).join('');
+
+  // hero
+  $('heroLevel').textContent=lvDef.lvl;
+  $('heroLevelName').textContent=lvDef.name;
+  $('heroRankName').textContent=lvDef.rank;
+  $('heroXpFill').style.width=pct+'%';
+  $('heroXpCurrent').textContent=S.xp-range.cur;
+  $('heroXpNext').textContent=range.next<999999?range.next-range.cur:'MAX';
+  $('hTotalXP').textContent=S.xp;
+  $('hStreak').textContent=S.streak;
+  $('hAccuracy').textContent=acc!==null?acc+'%':'—';
+
+  // scores tab
+  $('scXP').textContent=S.xp;
+  $('scLevel').textContent=lvDef.lvl;
+  $('scStreak').textContent=S.streak;
+  $('scAccuracy').textContent=acc!==null?acc+'%':'—';
+  $('scLevelBar').style.width=pct+'%';
+  $('scLevelPct').textContent=Math.round(pct)+'%';
+  $('scoreRankBadge').textContent=lvDef.badge;
+  $('scoreRankName').textContent=lvDef.name;
+  $('scoreRankSub').textContent='Niveau '+lvDef.lvl+' — '+lvDef.rank;
+}
+
+// ══════════════════════════════════════════════════
+//  BUILD LEVELS PATH
+// ══════════════════════════════════════════════════
+function buildLevels(){
+  const el=$('levelsList');
+  el.innerHTML=LEVELS.map(lv=>{
+    const done=S.xp>=lv.xpNeeded;
+    const cur=S.level===lv.lvl&&lv.lvl<10;
+    const locked=!done&&!cur;
+    const prog=done?100:cur?Math.round(getLevelXPRange(S.xp).progress*100):0;
+    let cls='level-item';
+    if(cur)cls+=' current';else if(done)cls+=' completed';else cls+=' locked';
+    return`<div class="${cls}" onclick="if(!this.classList.contains('locked')){}">
+      <div class="level-badge">${lv.badge}</div>
+      <div class="level-info">
+        <div class="level-num">Niveau ${lv.lvl} · ${lv.rank}</div>
+        <div class="level-name">${lv.name}</div>
+        <div class="level-desc">${lv.desc}</div>
+        ${cur?`<div class="level-progress-mini"><div class="level-progress-mini-fill" style="width:${prog}%"></div></div>`:''}
+        <div class="level-pills">
+          ${done?'<span class="pill pill-green">✓ Complété</span>':cur?'<span class="pill pill-gold">⚡ En cours</span>':'<span class="pill">🔒 '+lv.xpNeeded+' XP requis</span>'}
+          ${done&&lv.lvl<10?'<span class="pill pill-blue">'+lv.nextXP+' XP atteints</span>':''}
+        </div>
+      </div>
+      <div class="level-action">${locked?'🔒':cur?'▶':'✓'}</div>
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════════
+//  BUILD BADGES
+// ══════════════════════════════════════════════════
+function buildBadges(){
+  const el=$('badgesGrid');
+  el.innerHTML=BADGES_DEF.map(b=>{
+    const earned=S.earnedBadges.includes(b.id);
+    return`<div class="badge-item ${earned?'earned':''}">
+      <span class="badge-icon">${b.icon}</span>
+      <div class="badge-name">${b.name}</div>
+      <div class="badge-desc">${b.desc}</div>
+      ${!earned?'<div class="badge-lock">🔒</div>':''}
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════════
+//  INFRACTIONS DATA
+// ══════════════════════════════════════════════════
+const INFRACTIONS=[
+  {title:'MEURTRE — art. 221-1 CP',resume:'Donner volontairement la mort à autrui (crime).',legal:'Art. 221-1 CP : donner volontairement la mort à autrui.',materiel:'Acte positif de violence sur personne humaine vivante, avec lien de causalité entre l\'acte et le décès.',moral:'Intention homicide (dol spécial). Assassinat = meurtre + préméditation.',mnemo:'🧠 <strong>M.A.V.</strong> = Mort – Acte – Volonté',mnemo2:'« Je VEUX tuer cette PERSONNE VIVANTE par mon ACTE »'},
+  {title:'EMPOISONNEMENT — art. 221-5 CP',resume:'Administration substance mortelle (crime, infraction formelle).',legal:'Art. 221-5 CP : emploi ou administration de substances mortifères.',materiel:'Acte d\'emploi ou d\'administration d\'une substance mortifère sur personne vivante.',moral:'Connaissance de la nature mortelle + intention de donner la mort (résultat indifférent).',mnemo:'🧠 <strong>S.A.C.</strong> = Substance – Administration – Conscience',mnemo2:'Infraction formelle : consommée même sans décès.'},
+  {title:'HOMICIDE INVOLONTAIRE — art. 221-6 CP',resume:'Mort causée par faute (imprudence, négligence).',legal:'Art. 221-6 CP : atteintes involontaires à la vie.',materiel:'Faute (simple ou caractérisée) + lien de causalité avec le décès.',moral:'Pas d\'intention de tuer — imprudence, négligence, violation délibérée d\'obligation de sécurité.',mnemo:'🧠 <strong>F.L.M.</strong> = Faute – Lien – Mort',mnemo2:'Opposé au meurtre : mort = résultat de la faute, non de l\'intention.'},
+  {title:'VIOLENCES VOLONTAIRES — art. 222-11 CP',resume:'Atteinte volontaire à l\'intégrité (délit, aggravations).',legal:'Art. 222-11 et s. CP : violences avec/sans ITT.',materiel:'Acte positif de violence causant atteinte à l\'intégrité (coups, gestes, armes…).',moral:'Dol général : intention de porter atteinte. Aggravations relevant de l\'élément légal.',mnemo:'🧠 <strong>A.I.D.</strong> = Acte – ITT – Dol général',mnemo2:'« Je FRAPPE pour BLESSER » = dol général. Circonstances aggravantes = texte.'},
+  {title:'AGRESSION SEXUELLE — art. 222-22 CP',resume:'Atteinte sexuelle SANS pénétration imposée (délit).',legal:'Art. 222-22 CP : atteinte sexuelle par VCMS (hors viol).',materiel:'Acte sexuel imposé SANS pénétration (attouchements, caresses).',moral:'Intention d\'imposer acte sexuel en l\'absence de consentement (VCMS).',mnemo:'🧠 <strong>VCMS</strong> = Violence – Contrainte – Menace – Surprise',mnemo2:'Clé : contact sexuel imposé SANS pénétration. Avec pénétration → VIOL.'},
+  {title:'VIOL — art. 222-23 CP',resume:'Toute pénétration sexuelle imposée (crime).',legal:'Art. 222-23 CP : pénétration sexuelle par VCMS.',materiel:'Pénétration sexuelle (toute nature, même légère) imposée à la victime.',moral:'Intention de réaliser une pénétration en l\'absence de consentement.',mnemo:'🧠 <strong>P + VCMS</strong> = Pénétration + Violence/Contrainte/Menace/Surprise',mnemo2:'Pénétration = viol (crime 15 ans). Sans pénétration = agression sexuelle (délit).'},
+  {title:'VOL — art. 311-1 CP',resume:'Soustraction frauduleuse de la chose d\'autrui (délit pivot).',legal:'Art. 311-1 CP : soustraction frauduleuse de la chose d\'autrui.',materiel:'Soustraction d\'une chose corporelle appartenant à autrui (appréhension + déplacement) à l\'insu ou contre le gré.',moral:'Animus domini : volonté de se comporter en propriétaire en sachant que la chose appartient à autrui.',mnemo:'🧠 <strong>S.C.A.</strong> = Soustraction – Chose d\'autrui – Animus domini',mnemo2:'« Je PRENDS ce qui n\'est PAS à moi en voulant me l\'APPROPRIER »'},
+  {title:'RECEL — art. 321-1 CP',resume:'Profiter d\'un bien issu d\'une infraction tierce.',legal:'Art. 321-1 CP : 4 actes + bien d\'infraction + connaissance.',materiel:'4 formes : dissimuler / détenir / transmettre / bénéficier d\'un bien issu d\'infraction commise par un tiers.',moral:'Connaissance de l\'origine frauduleuse et volonté d\'en profiter.',mnemo:'🧠 <strong>4D + COF</strong> = 4 actions + Connaissance Origine Frauduleuse',mnemo2:'« Je TOUCHE un bien SALE en SACHANT qu\'il est sale » = recel.'},
+  {title:'ESCROQUERIE — art. 313-1 CP',resume:'Obtention d\'un bien par tromperie (délit).',legal:'Art. 313-1 CP : obtention par tromperie (4 moyens).',materiel:'4 moyens de tromperie → remise volontaire par victime trompée → préjudice.',moral:'Dol spécial : volonté d\'obtenir la remise en trompant.',mnemo:'🧠 <strong>T.R.P.D.</strong> = Tromperie – Remise – Préjudice – Dol spécial',mnemo2:'4 moyens : Faux NOM – Fausse QUALITÉ – Abus QUALITÉ – MANŒUVRES.'},
+  {title:'OUTRAGE — art. 433-5 CP',resume:'Expression outrageante envers PDAP/PCMSP (délit).',legal:'Art. 433-5 CP : outrage à dépositaire autorité publique.',materiel:'Expression outrageante (paroles, gestes, écrits, menaces) adressée à l\'agent en lien avec ses fonctions.',moral:'Conscience de la qualité de la victime + volonté d\'attenter à sa dignité.',mnemo:'🧠 <strong>E.Q.D.</strong> = Expression – Qualité connue – Dignité atteinte',mnemo2:'OUTRAGE = expression sans violence. Avec violence → RÉBELLION.'},
+  {title:'RÉBELLION — art. 433-6 CP',resume:'Résistance violente à un PDAP/PCMSP.',legal:'Art. 433-6 CP : rébellion contre dépositaire autorité publique.',materiel:'Acte de résistance VIOLENTE opposé à l\'agent dans l\'exercice d\'un acte légal.',moral:'Volonté de s\'opposer à l\'autorité publique en connaissance de la qualité de la victime.',mnemo:'🧠 <strong>V.F.O.</strong> = Violence – Fonctions – Opposition',mnemo2:'Rébellion = OUTRAGE avec violence. Mémo : « Je RÉSISTE physiquement ».'},
+  {title:'DDD DANGEREUSES — art. 322-6 CP',resume:'Destructions créant un danger pour les personnes.',legal:'Art. 322-6 CP : destructions par moyens dangereux.',materiel:'Atteinte à un bien d\'autrui par moyen dangereux (incendie, explosion) créant danger pour personnes.',moral:'Intention de détruire avec conscience du danger créé.',mnemo:'🧠 <strong>D.M.D.</strong> = Destruction – Moyen dangereux – Danger personnes',mnemo2:'C\'est le MOYEN utilisé (feu, explosif) qui crée la qualification.'},
+  {title:'ASSOCIATION DE MALFAITEURS — art. 450-1 CP',resume:'Groupement/entente pour préparer infractions ≥5 ans.',legal:'Art. 450-1 CP : groupement/entente + infractions ≥5 ans + faits préparatoires.',materiel:'Groupement ou entente caractérisée par faits matériels préparatoires (repérages, acquisitions…).',moral:'Intention de préparer la commission d\'infractions graves.',mnemo:'🧠 <strong>G.F.I.</strong> = Groupement – Faits préparatoires – Intention',mnemo2:'OPJ : permet de poursuivre AVANT la commission + accès régime CDO.'},
+  {title:'ALCOOL AU VOLANT (délictuel) — art. L.234-1 CR',resume:'Alcoolémie ≥ 0,80 g/L sang ou ≥ 0,40 mg/L air.',legal:'Art. L.234-1 CR : conduite sous empire alcoolique.',materiel:'Conduite avec taux ≥ 0,80 g/L sang ou ≥ 0,40 mg/L air (éthylomètre + vérification).',moral:'Volonté de conduire après consommation d\'alcool.',mnemo:'🧠 Seuil délictuel : <strong>0,80 g/L sang = délit / 0,50 g/L = contravention</strong>',mnemo2:'Mémo : « 80 = Délit / 50 = Contravention ». Double du seuil contraventionnel.'},
+  {title:'USAGE STUPÉFIANTS — art. L.3421-1 CSP',resume:'Consommation volontaire de stupéfiants (délit).',legal:'Art. L.3421-1 CSP : usage illicite de stupéfiants.',materiel:'Acte de consommation révélé par constatations, aveux, analyses ou matériel saisi.',moral:'Usage volontaire, non accidentel, en connaissance du caractère illicite.',mnemo:'🧠 <strong>C.S.V.</strong> = Consommation – Substance classée – Volonté',mnemo2:'Usage (délit L.3421-1) vs Trafic/Détention (L.3421-4, peine plus lourde).'},
+];
+
+const FICHES_PROC=[
+  {title:'⚖️ Définition OPJ (art. 16 CPP)',body:`<p><strong>Officier de Police Judiciaire</strong> : agent habilité judiciairement à constater les infractions, rassembler les preuves, entendre les témoins et placer en garde à vue.</p><p><strong>OPJ actifs</strong> (commissaires, officiers de plein droit) vs <strong>OPJ par fonction</strong> (commandants, capitaines après 3 ans + habilitation Procureur Général).</p>`},
+  {title:'⏱️ GAV — Durées par catégorie',body:`<p><strong>Droit commun</strong> : 24h renouvelables une fois = <strong>48h max</strong><br><strong>CDO / Terrorisme</strong> : 96h (4×24h), voire 144h pour le terrorisme<br><strong>Mineurs 13-18 ans</strong> : idem majeurs + protections renforcées<br><strong>Mineurs 10-13 ans</strong> : retenue 12h + prolongation 12h exceptionnelle (≥5 ans, avis magistrat)</p>`},
+  {title:'⚖️ 9 droits GAV (art. 63-1 CPP)',body:`<ol style="padding-left:16px;line-height:2"><li>Droit au <strong>silence</strong></li><li>Assistance <strong>avocat</strong> (dès le début, 30 min)</li><li><strong>Examen médical</strong></li><li>Avis <strong>famille / tiers</strong> (3h max)</li><li><strong>Consulat</strong> si étranger</li><li><strong>Interprète</strong> si nécessaire</li><li><strong>Observations</strong> au magistrat</li><li>Consultation <strong>pièces</strong> de procédure</li><li><strong>Formulaire</strong> des droits</li></ol><div class="mnemo-box"><div class="mnemo-lbl">🗝️ Mémo</div><div class="mnemo-txt">« SAMET + AFOI »</div><div class="mnemo-sub">Silence – Avocat – Médecin – Étranger – Tiers + Avis famille – Observations – Interprète</div></div>`},
+  {title:'🚨 Flagrance — 4 situations (art. 53 CPP)',body:`<p>1. Infraction qui <strong>se commet actuellement</strong><br>2. Infraction qui <strong>vient de se commettre</strong><br>3. Suspect poursuivi par la <strong>clameur publique</strong><br>4. Suspect trouvé en possession d'<strong>objets ou traces</strong></p><p><strong>Durée</strong> : 8 jours + prolongation 8 jours si infraction ≥ 5 ans (PR).</p>`},
+  {title:'🏠 Perquisitions — Règles clés',body:`<p><strong>En flagrance</strong> : libres 6h–21h, nocturnes si nécessité impérieuse.<br><strong>Préliminaire sans assentiment</strong> : infraction ≥ 3 ans + autorisation JLD écrite et motivée.<br><strong>Lieux protégés</strong> : avocat (Bâtonnier), médecin (Conseil Ordre), journaliste (JLD).<br><strong>PV descriptif obligatoire</strong> : inventaire exhaustif + signatures.</p>`},
+  {title:'📊 Classification tripartite',body:`<div style="overflow-x:auto"><table style="width:100%;font-size:.83rem;border-collapse:collapse;margin-top:8px"><tr style="color:var(--gold);border-bottom:1px solid var(--border)"><th style="padding:8px 4px;text-align:left">Catégorie</th><th>Peine max</th><th>Juridiction</th><th>Prescription</th></tr><tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 4px">Crime</td><td>Réclusion</td><td>Cour d'Assises</td><td>20 ans</td></tr><tr style="border-bottom:1px solid var(--border)"><td>Délit</td><td>≤10 ans</td><td>Trib. Correct.</td><td>6 ans</td></tr><tr><td>Contravention</td><td>≤1 500 €</td><td>Trib. Police</td><td>1 an</td></tr></table></div>`},
+  {title:'📋 Alternatives aux poursuites',body:`<p><strong>Classement sans suite</strong> : infraction non caractérisée, preuves insuffisantes.<br><strong>Avertissement pénal probatoire</strong> : ex-rappel à la loi.<br><strong>Médiation pénale</strong> : accord victime — <span style="color:var(--red)">INTERDIT violences conjugales</span>.<br><strong>Composition pénale</strong> : reconnaissance + peine ≤5 ans + validation Président TJ.</p>`},
+  {title:'🔍 Audition libre (art. 61-1 CPP)',body:`<p>Personne suspectée sans raisons plausibles suffisantes pour GAV.<br><strong>Droits</strong> : quitter à tout moment, avocat, interprète, notification droits.<br><strong>Durée</strong> : pas de limitation légale (GAV si dépassement nécessaire).</p>`},
+  {title:'⏰ Prescriptions action publique',body:`<p><strong>Droit commun</strong> : Crimes 20 ans / Délits 6 ans / Contraventions 1 an<br><strong>Terrorisme</strong> : Crimes 30 ans / Délits 20 ans<br><strong>Crimes contre l'humanité</strong> : IMPRESCRIPTIBLES<br><strong>Infractions sur mineurs</strong> : délai court à partir de la majorité</p>`},
+  {title:'🏛️ CDO — Régime dérogatoire',body:`<p><strong>Base</strong> : art. 706-73 CPP (stups, armes, proxénétisme, terrorisme, blanchiment…)<br><strong>GAV</strong> : 96h (4×24h) si ≥5 ans<br><strong>Techniques spéciales</strong> : perquisitions nocturnes, sonorisations, géolocalisation, captations données<br><strong>Autorisation</strong> : JLD ou JI<br><strong>Juridictions</strong> : JIRS</p>`},
+];
+
+const ORAL_DATA=[
+  {q:'Quelles sont vos motivations pour devenir OPJ ?',a:'<strong>Axes :</strong> évolution naturelle après expérience terrain, volonté d\'autonomie dans les enquêtes, responsabilités accrues, passion investigation, contribution directe à la justice.<br><strong>À éviter :</strong> réponses vagues, focalisation sur le grade ou la rémunération uniquement.'},
+  {q:'Différence enquête de flagrance vs préliminaire ?',a:'<strong>Flagrance (art. 53 CPP) :</strong> infraction en cours/venant de se commettre, pouvoirs IMMÉDIATS, aucune autorisation préalable.<br><strong>Préliminaire (art. 75 CPP) :</strong> hors cadre flagrant, actes coercitifs sur autorisation Procureur. <strong>Clé :</strong> urgence et étendue des pouvoirs OPJ.'},
+  {q:'Décrivez le principe de loyauté des preuves.',a:'<strong>Principe :</strong> preuves légales uniquement, sans stratagème déloyal ni provocation policière.<br><strong>Conséquence :</strong> nullité si violation.<br><strong>Jurisprudence :</strong> CEDH art. 6 (procès équitable), Cass. Crim.'},
+  {q:'Que faites-vous face à un ordre manifestement illégal ?',a:'<strong>Principe :</strong> devoir de refus (art. 122-4 CP) — ordre manifestement illégal compromettant gravement l\'intérêt public.<br><strong>Démarche :</strong> alerter hiérarchie, consigner par écrit, saisir autorité judiciaire si nécessaire.'},
+  {q:'Quelles sont les phases du procès pénal ?',a:'<strong>1.</strong> Enquête de police (art. 14 CPP)<br><strong>2.</strong> Poursuites — décision Procureur (opportunité des poursuites)<br><strong>3.</strong> Instruction préparatoire (facultative, obligatoire crimes) — JI<br><strong>4.</strong> Jugement — culpabilité + peine<br><strong>5.</strong> Application des peines — JAP'},
+  {q:'Caractères du Ministère Public ?',a:'<strong>Indivisible</strong> — <strong>Irrécusable</strong> — <strong>Irresponsable</strong> — <strong>Indépendant</strong> (opportunité des poursuites, art. 40-1 CPP) — <strong>Hiérarchisé</strong> (Garde des Sceaux → PG → PR → OMP).'},
+  {q:'Causes d\'extinction de l\'action publique ?',a:'<strong>Amnistie</strong> — <strong>Abrogation loi pénale</strong> — <strong>Décès du prévenu</strong> — <strong>Chose jugée</strong> — <strong>Transaction</strong> — <strong>Prescription</strong> (Crimes 20 ans / Délits 6 ans / Contraventions 1 an).'},
+  {q:'Nullités textuelles vs substantielles ?',a:'<strong>Textuelles :</strong> expressément prévues (ex. art. 59 CPP pour perquisitions).<br><strong>Substantielles :</strong> non prévues par texte mais gravité de la violation inacceptable (jurisprudence).<br><strong>Condition commune :</strong> grief causé à une partie OU nullité d\'ordre public.'},
+  {q:'Témoin assisté vs mis en examen ?',a:'<strong>Témoin assisté (art. 113-1 CPP) :</strong> indices mais pas graves et concordants. Droits : avocat, pas GAV, pas serment.<br><strong>Mis en examen (art. 105 CPP) :</strong> indices GRAVES ET CONCORDANTS. Droits : avocat, CJ/détention provisoire possible.<br><strong>Évolution :</strong> TA peut devenir ME.'},
+  {q:'Qu\'est-ce que la CDO et son régime ?',a:'<strong>Définition :</strong> infractions liste art. 706-73 CPP (stups, armes, proxénétisme, terrorisme…).<br><strong>GAV dérogatoire :</strong> 96h (4×24h).<br><strong>Techniques spéciales :</strong> perquisitions nocturnes, sonorisations, géolocalisation (JLD/JI).<br><strong>Juridictions :</strong> JIRS.'},
+  {q:'Principe de l\'opportunité des poursuites ?',a:'<strong>Principe :</strong> Procureur apprécie librement (art. 40-1 CPP).<br><strong>3 options :</strong> Classement / Alternatives / Poursuites.<br><strong>Contrôle :</strong> victime peut se constituer PC devant doyen des JI (3 mois).'},
+  {q:'Obligations du témoin en commission rogatoire ?',a:'<strong>Comparaître</strong> (force publique si refus) — <strong>Prêter serment</strong> (sauf exceptions) — <strong>Décliner identité</strong> — <strong>Déposer</strong>.<br><strong>Sanction refus :</strong> délit, 3 750 € (art. 434-15 CP).'},
+];
+
+// ══════════════════════════════════════════════════
+//  BUILD FICHES SECTION
+// ══════════════════════════════════════════════════
+let ficheMode='infractions';
+
+function buildFiches(){
+  // infractions
+  $('infractionsContent').innerHTML=INFRACTIONS.map(inf=>`
+    <div class="accordion-item" onclick="this.classList.toggle('open')" data-search="${(inf.title+' '+inf.resume+' '+inf.mnemo2).toLowerCase()}">
+      <div class="accordion-head"><div class="accordion-title">${inf.title}</div><div class="accordion-arrow">▶</div></div>
+      <div class="accordion-body">
+        <p><em>${inf.resume}</em></p>
+        <div class="elem-row">
+          <div class="elem-block"><div class="elem-lbl">⚖️ Légal</div><div class="elem-txt">${inf.legal}</div></div>
+          <div class="elem-block"><div class="elem-lbl">🔨 Matériel</div><div class="elem-txt">${inf.materiel}</div></div>
+          <div class="elem-block"><div class="elem-lbl">🧠 Moral</div><div class="elem-txt">${inf.moral}</div></div>
+        </div>
+        <div class="mnemo-box"><div class="mnemo-lbl">🗝️ Astuce mémo</div><div class="mnemo-txt">${inf.mnemo}</div><div class="mnemo-sub">${inf.mnemo2}</div></div>
+      </div>
+    </div>`).join('');
+
+  // fiches proc
+  $('fichesContent').innerHTML=FICHES_PROC.map(f=>`
+    <div class="accordion-item" onclick="this.classList.toggle('open')" data-search="${(f.title+' '+f.body).toLowerCase()}">
+      <div class="accordion-head"><div class="accordion-title">${f.title}</div><div class="accordion-arrow">▶</div></div>
+      <div class="accordion-body">${f.body}</div>
+    </div>`).join('');
+
+  // oral
+  $('oralContent').innerHTML=ORAL_DATA.map((o,i)=>`
+    <div class="accordion-item" onclick="this.classList.toggle('open')" data-search="${(o.q+' '+o.a).toLowerCase()}">
+      <div class="accordion-head"><div class="accordion-title">❓ ${o.q}</div><div class="accordion-arrow">▶</div></div>
+      <div class="accordion-body">${o.a}</div>
+    </div>`).join('');
+}
+
+function switchFicheMode(mode,btn){
+  ficheMode=mode;
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  $('infractionsContent').classList.toggle('hidden',mode!=='infractions');
+  $('fichesContent').classList.toggle('hidden',mode!=='fiches');
+  $('oralContent').classList.toggle('hidden',mode!=='oral');
+  filterFiches();
+}
+
+function filterFiches(){
+  const q=$('ficheSearch').value.toLowerCase().trim();
+  const gridId=ficheMode==='infractions'?'infractionsContent':ficheMode==='fiches'?'fichesContent':'oralContent';
+  const items=[...$( gridId).querySelectorAll('.accordion-item')];
+  items.forEach(el=>{
+    const match=!q||el.dataset.search.includes(q);
+    el.style.display=match?'':'none';
+  });
+}
+
+// ══════════════════════════════════════════════════
+//  BUILD SCORES TAB
+// ══════════════════════════════════════════════════
+function buildProTips(){
+  const block=$('proTipsBlock');
+  const tip=PRO_TIPS[Math.floor(Math.random()*PRO_TIPS.length)];
+  block.innerHTML=`<div class="pro-tip" style="margin-bottom:16px"><div class="pro-tip-icon">${tip.icon}</div><div><div class="pro-tip-label">Conseil du Pro</div><div class="pro-tip-text">${tip.text}</div></div></div>`;
+}
+
+function buildDailyTip(){
+  const day=new Date().getDay();
+  const tip=TIPS[day%TIPS.length];
+  $('dailyTip').innerHTML=`<div class="daily-tip-icon">${tip.icon}</div><div><div class="daily-tip-label">${tip.label}</div><div class="daily-tip-text">${tip.text}</div></div>`;
+  // pro tip
+  const pt=PRO_TIPS[Math.floor(Math.random()*PRO_TIPS.length)];
+  $('proTipHome').innerHTML=`<div class="pro-tip-icon">${pt.icon}</div><div><div class="pro-tip-label">Conseil du Pro</div><div class="pro-tip-text">${pt.text}</div></div>`;
+}
+
+// ══════════════════════════════════════════════════
+//  NAVIGATION
+// ══════════════════════════════════════════════════
+const TAB_MAP={home:'homeSection',parcours:'parcoursSection',fiches:'fichesSection',badges:'badgesSection',scores:'scoresSection'};
+
+function goTab(tab,el){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  $(TAB_MAP[tab])?.classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
+  (el||document.querySelector(`[data-tab="${tab}"]`))?.classList.add('active');
+  if(tab==='badges')buildBadges();
+  if(tab==='parcours')buildLevels();
+  if(tab==='scores'){updateUI();buildProTips()}
+  updateUI();
+}
+
+// ══════════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded',()=>{
+  updateStreak();
+  updateUI();
+  buildFiches();
+  buildDailyTip();
+  checkBadges();
+  buildLevels();
+});
+</script>
+
+</body>
+</html>
